@@ -1,57 +1,12 @@
 import React from "react";
 import classes from "./Dialogs.module.css";
-import {NavLink} from "react-router-dom";
-
-type DialogsMessageDataType = {}
-
-type DialogsItemType = {
-    name: string
-    id: number
-}
-
-type DialogsMessagesType = {
-
-    message: string
-}
+import DialogItem from "./DialogItem/DialogItem";
+import Message from "./Message/Message";
 
 
-const DialogsItem = (props: DialogsItemType) => {
-    return (
-        <div className={classes.dialog + " " + classes.active}>
-            <NavLink to={"/dialogs/" + props.id}>{props.name}</NavLink>
-        </div>
-
-    )
-}
-
-
-const DialogsMessages = (props: DialogsMessagesType) => {
-    return (
-        <div className={classes.message}>
-            {props.message}
-        </div>)
-}
-type DialogsDateType = {
-    time: string
-}
-const DialogsHobbies = (props: DialogsDateType) => {
-    return (
-        <div>
-            {props.time}
-        </div>)
-}
 
 const Dialogs = () => {
-    let dateData = [
-        {id: 1, time: "13:22"},
-        {id: 2, time: "14:32"},
-        {id: 3, time: "12:25"},
-        {id: 4, time: "11:21"},
-        {id: 5, time: "16:24"},
-        {id: 6, time: "18:32"},
 
-
-    ]
     let dialogsData = [
         {id: 1, name: "Artemy"},
         {id: 2, name: "Alevtina"},
@@ -82,48 +37,26 @@ const Dialogs = () => {
     let newDialogs = dialogsData
         .map(
             dialog => {
-                return <DialogsItem name={dialog.name} id={dialog.id}
+                return <DialogItem name={dialog.name} id={dialog.id}
                 />
             });
 
     let newDialogsMessages = dialogsMessagesData
-        .map(message => <DialogsMessages message={message.message}
+        .map(message => <Message message={message.message}
         />);
 
-    let newDialogsDate = dateData
-        .map(time => {
-            return <DialogsHobbies time={time.time}/>
-        });
 
     return (
         <div className={classes.dialogsAll}>
 
             <div className={classes.dialogs}>
                 {newDialogs}
-                {/*<DialogsItem name = {dialogsData[0].name} id={dialogsData[0].id} />*/}
-                {/*<DialogsItem name = {dialogsData[1].name} id={dialogsData[1].id} />*/}
-                {/*<DialogsItem name = {dialogsData[2].name} id={dialogsData[2].id} />*/}
-                {/*<DialogsItem name = {dialogsData[3].name} id={dialogsData[3].id} />*/}
-                {/*<DialogsItem name = {dialogsData[4].name} id={dialogsData[4].id} />*/}
-                {/*<DialogsItem name = {dialogsData[5].name} id={dialogsData[5].id} />*/}
-
             </div>
-
 
             <div className={classes.messages}>
                 {newDialogsMessages}
-                {/*<DialogsMessages message={dialogsMessages[0].message} />*/}
-                {/*<DialogsMessages message={dialogsMessages[1].message} />*/}
-                {/*<DialogsMessages message={dialogsMessages[2].message} />*/}
-                {/*<DialogsMessages message={dialogsMessages[3].message} />*/}
-                {/*<DialogsMessages message={dialogsMessages[4].message} />*/}
-                {/*<DialogsMessages message={dialogsMessages[5].message} />*/}
-
             </div>
 
-            <div className={classes.time}>
-                {newDialogsDate}
-            </div>
 
         </div>
 
