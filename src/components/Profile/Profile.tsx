@@ -1,17 +1,12 @@
 import React from "react";
-import classes from "./Profile.module.css";
-import MyPosts from "./MyPosts/MyPosts";
+import MyPosts, { propsType } from "./MyPosts/MyPosts";
 import ProfileItem from "./ProfileItem/ProfileItem";
 
-
-
-
-const Profile = () => {
+const Profile = (props: propsType) => {
   return (
     <div>
       <ProfileItem />
-      <MyPosts />
-
+      <MyPosts posts={props.posts} />
     </div>
   );
 };
