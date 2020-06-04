@@ -1,5 +1,4 @@
 import React from "react";
-// import {BrowserRouter,Route} from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
@@ -9,14 +8,19 @@ import Dialogs from "./components/Dialogs/Dialogs";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import { postsType } from "./components/Profile/MyPosts/MyPosts";
-import {
-  dialogsDataType,
-  dialogsMessagesDataType,
-} from "./components/Dialogs/Dialogs";
-import state from "./redux/state";
+import { stateType } from "./redux/state";
+// import { postsType } from "./components/Profile/MyPosts/MyPosts";
+// import {
+//   dialogsDataType,
+//   dialogsMessagesDataType,
+// } from "./components/Dialogs/Dialogs";
+// import state from "./redux/state";
 
-const App = () => {
+type StateType2={
+    state:stateType
+}
+
+const App = (props:StateType2) => {
   return (
     <BrowserRouter>
       <div className="app-wrapper">
@@ -29,14 +33,14 @@ const App = () => {
             path="/dialogs"
             component={() => {
               return (
-                <Dialogs dialogs={state.dialogs} messages={state.messages} />
+                <Dialogs dialogs={props.state.dialogs} messages={props.state.messages} />
               );
             }}
           />
           <Route
             path="/profile"
             component={() => {
-              return <Profile posts={state.posts} />;
+              return <Profile posts={props.state.posts} />;
             }}
           />
           <Route path="/news" component={News} />

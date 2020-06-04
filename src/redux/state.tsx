@@ -6,7 +6,9 @@ import {
   dialogsMessagesDataType,
 } from "./../components/Dialogs/Dialogs";
 
-type stateType = {
+
+
+export type stateType = {
   posts: Array<postsType>;
   dialogs: Array<dialogsDataType>;
   messages: Array<dialogsMessagesDataType>;
