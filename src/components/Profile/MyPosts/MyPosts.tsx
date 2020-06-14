@@ -6,10 +6,15 @@ export type postsType = {
   id: number;
   message: string;
   countLikes: number;
+
+
 };
 
 export type propsType = {
+
   posts: Array<postsType>;
+    addPost:(postMessage:any) => void
+
 };
 
 const MyPosts = (props: propsType) => {
@@ -17,15 +22,28 @@ const MyPosts = (props: propsType) => {
     return <Post message={item.message} likesCount={item.countLikes} />;
   });
 
+  //создайм ссылку на какой то элемент из JSX
+    let newPostElement = React.createRef<HTMLTextAreaElement>();
+
+    let addPost = () => {
+
+        let text = newPostElement.current!.value;
+        props.addPost(text)
+        newPostElement.current!.value = ""
+    }
+
+
+
   return (
     <div className={classes.postAll}>
       My posts
       <div>
         <div>
-          <textarea></textarea>
+          <textarea ref={newPostElement}></textarea>
         </div>
         <div>
-          <button>Add post</button>
+          <button onClick={addPost}>Add post</button>
+
         </div>
       </div>
       <div className={classes.posts}>{newMessagesData}</div>

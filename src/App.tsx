@@ -9,6 +9,7 @@ import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 import { stateType } from "./redux/state";
+import {addPost} from "./redux/state";
 // import { postsType } from "./components/Profile/MyPosts/MyPosts";
 // import {
 //   dialogsDataType,
@@ -16,8 +17,9 @@ import { stateType } from "./redux/state";
 // } from "./components/Dialogs/Dialogs";
 // import state from "./redux/state";
 
-type StateType2={
+export type StateType2={
     state:stateType
+    addPost:(postMessage:any) => void
 }
 
 const App = (props:StateType2) => {
@@ -33,14 +35,15 @@ const App = (props:StateType2) => {
             path="/dialogs"
             component={() => {
               return (
-                <Dialogs dialogs={props.state.dialogs} messages={props.state.messages} />
+                <Dialogs dialogs={props.state.dialogsPage.dialogs} messages={props.state.dialogsPage.messages} />
               );
             }}
           />
           <Route
             path="/profile"
-            component={() => {
-              return <Profile posts={props.state.posts} />;
+            render={() => { return <Profile
+                posts={props.state.profilePage.posts}
+                addPost={props.addPost} />;
             }}
           />
           <Route path="/news" component={News} />

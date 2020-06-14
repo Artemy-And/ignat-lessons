@@ -26,11 +26,27 @@ const Dialogs = (props: dialogsAndMessagesType) => {
     <Message message={message.message} />
   ));
 
+  let newPostElement: any = React.createRef();
+
+  let addPost = () => {
+    let text = newPostElement.current.value;
+alert(text)
+  }
+
   return (
     <div className={classes.dialogsAll}>
       <div className={classes.dialogs}>{newDialogs}</div>
 
+      <div>
+        <textarea ref={newPostElement}></textarea>
+
+
+        <button onClick={addPost}>Add post</button>
+      </div>
+
+
       <div className={classes.messages}>{newDialogsMessages}</div>
+
     </div>
   );
 };

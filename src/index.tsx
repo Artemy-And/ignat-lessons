@@ -1,7 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import statee from "./redux/state"
 
 
-ReactDOM.render(<App state = {statee} />, document.getElementById("root"));
+
+import { rerenderEntireTree } from "./render";
+import state from "./redux/state";
+
+
+rerenderEntireTree(state);
+
+//ReactDOM.render(<App state = {state} addPost={addPost}/>, document.getElementById("root"));

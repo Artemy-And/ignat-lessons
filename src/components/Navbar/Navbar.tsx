@@ -6,7 +6,7 @@ import state from "./../../redux/state";
 
 
 const Navbar = () => {
-    const bestFriends = state.dialogs.map(friend => {
+    const bestFriends = state.dialogsPage.dialogs.map(friend => {
         return <div>{friend.name}</div> ;
     })
   return (
