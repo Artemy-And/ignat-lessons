@@ -1,17 +1,13 @@
 .nav {
   grid-area: n;
-  background-color: #E9EBEE;
+  background-color: indianred;
   padding: 20px;
 }
 .item a {
-  color: black ;
+  color: white;
   text-decoration: none;
 }
 a.active{
-  color: #2A60CA;
+  color: wheat;
   text-decoration: none;
-}
-.myBestFriends{
-  padding: 10px;
-
 }

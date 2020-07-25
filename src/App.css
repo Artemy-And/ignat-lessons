@@ -16,11 +16,12 @@
   /* grid-gap: 10px; */
 }
 
-.app-wrapper-content {
+.app-wrapper-content{
   grid-area: c;
-  background-color: ghostwhite;
+  background-color: khaki;
+
 }
-.app-wrapper-content img {
+.app-wrapper-content img{
   height: 400px;
-  width: 100%;
+  width: 750px;
 }

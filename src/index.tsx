@@ -1,10 +1,12 @@
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
 
+ReactDOM.render(<App />, document.getElementById("root"));
 
-import { rerenderEntireTree } from "./render";
-import state from "./redux/state";
+let a = {
+  name: "Artemy",
+  age: 30,
+};
 
-
-rerenderEntireTree(state);
-
-//ReactDOM.render(<App state = {state} addPost={addPost}/>, document.getElementById("root"));

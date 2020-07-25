@@ -1,14 +1,7 @@
 .header {
   grid-area: h;
-  background-color: #2459B8;
+  background-color: green;
 }
 .header img {
   width: 50px;
-  color: black;
-  background-color: black;
-}
-.icon{
-  color: white;
-font-size: 25px;
-  padding: 17px;
 }

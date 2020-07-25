@@ -1,14 +1,8 @@
 import React from "react";
 import classes from "./Navbar.module.css";
 import {NavLink} from "react-router-dom";
-import state from "./../../redux/state";
-
-
 
 const Navbar = () => {
-    const bestFriends = state.dialogsPage.dialogs.map(friend => {
-        return <div>{friend.name}</div> ;
-    })
   return (
     <nav className={classes.nav}>
       <div className={classes.item}>
@@ -27,12 +21,6 @@ const Navbar = () => {
       <div className={classes.item}>
           <NavLink to ="settings" activeClassName={classes.active}>Settings</NavLink>
       </div>
-        <div className={classes.item}>
-            <span className={classes.myBestFriends}>{bestFriends}</span>
-        </div>
-
-
-
     </nav>
   );
 };
