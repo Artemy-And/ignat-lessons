@@ -2,20 +2,33 @@ import React from "react";
 import classes from "./MyPosts.module.css";
 import Post from "./Post/Post";
 
-const MyPosts = () => {
+export type postsType = {
+  id: number;
+  message: string;
+  countLikes: number;
+};
+
+export type propsType = {
+  posts: Array<postsType>;
+};
+
+const MyPosts = (props: propsType) => {
+  let newMessagesData = props.posts.map((item) => {
+    return <Post message={item.message} likesCount={item.countLikes} />;
+  });
+
   return (
-    <div>
+    <div className={classes.postAll}>
       My posts
       <div>
-        <textarea></textarea>
-        <button>Add post</button>
+        <div>
+          <textarea></textarea>
+        </div>
+        <div>
+          <button>Add post</button>
+        </div>
       </div>
-      <div className={classes.posts}>
-        <Post message = 'Hi, how are you?' info = 'LIKE' addInfo="DISLIKE"/>
-        <Post message = 'It is my first post' info = 'LIKE' addInfo="DISLIKE"/>
-
-
-      </div>
+      <div className={classes.posts}>{newMessagesData}</div>
     </div>
   );
 };
