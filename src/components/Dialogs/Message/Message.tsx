@@ -11,6 +11,7 @@ const Message = (props: DialogsMessagesType) => {
     <div className={classes.container}>
       <div className={classes.messageblue}>
         <div className={classes.message}>{props.message}</div>
+          {/*<button>Del</button>*/}
         <div className={classes.messagetimestampleft}>17:15</div>
       </div>
     </div>

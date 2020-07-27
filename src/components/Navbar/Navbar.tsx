@@ -1,12 +1,12 @@
 import React from "react";
 import classes from "./Navbar.module.css";
 import {NavLink} from "react-router-dom";
-import state from "./../../redux/state";
+import store from "./../../redux/state";
 
 
 
 const Navbar = () => {
-    const bestFriends = state.dialogs.map(friend => {
+    const bestFriends = store._state.dialogsPage.dialogs.map(friend => {
         return <div>{friend.name}</div> ;
     })
   return (
