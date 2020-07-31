@@ -3,12 +3,11 @@ import classes from "./Dialogs.module.css";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {
-    addMessageCreator,
-    addPostActionCreator,
     dialogsTypeState,
-    updateNEwMessageTextCreator,
-    updateNEwPostTextActionCreator
 } from "../../redux/state";
+import {addMessageCreator, updateNEwMessageTextCreator, DialogsActionType} from "../../redux/dialogs-reducer"
+import {ConnectedComponent} from "react-redux";
+
 
 export type dialogsDataType = {
     id: number;
@@ -21,34 +20,47 @@ export type dialogsMessagesDataType = {
 
 
 type dialogsAndMessagesType = {
-    state: dialogsTypeState
-    dispatch: (action: any) => void
-
     // newMessageText:string
+    // state: dialogsTypeState
+    // dispatch: (action: DialogsActionType) => void
+
+    updateNewMessageText:(text:string)=>void
+    addMessageCreator:()=>void
+    dialogsPage:dialogsTypeState
+    connect:Function
+    //DialogsContainer: ConnectedComponent<(props: dialogsAndMessagesType) => JSX.Element, Pick<dialogsAndMessagesType, "updateNewMessageText" | "connect">>
+
+
+
 
 };
 
 const Dialogs = (props: dialogsAndMessagesType) => {
-    let newDialogs = props.state.dialogs.map((dialog: dialogsDataType) => {
+
+    let state = props.dialogsPage
+
+
+    let newDialogs = state.dialogs.map((dialog: dialogsDataType) => {
         return <DialogItem name={dialog.name} id={dialog.id}/>;
     });
-
-    let newDialogsMessages = props.state.messages.map((message: dialogsMessagesDataType) => (
+    let newDialogsMessages = state.messages.map((message: dialogsMessagesDataType) => (
         <Message message={message.message}/>
     ));
+    let newMessageText = state.newMessageText;
 
-    let newPostElement: any = React.createRef();
+
+
+    // let newPostElement: any = React.createRef();
 
     let addPost = () => {
-        props.dispatch(addMessageCreator())
-        newPostElement.current.value = ""
+        props.addMessageCreator()
+        // newPostElement.current.value = ""
     }
 
     let onChangeMessage = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        // let text = newPostElement.current!.value;
         let text = event.currentTarget.value
-        let action = updateNEwMessageTextCreator(text);
-        props.dispatch(action);
+        props.updateNewMessageText(text)
+
 
     }
 
@@ -58,9 +70,9 @@ const Dialogs = (props: dialogsAndMessagesType) => {
 
             <div>
                 <textarea
-                    ref={newPostElement}
+                    // ref={newPostElement}
                     onChange={onChangeMessage}
-                    value={props.state.newMessageText}>
+                    value={state.newMessageText}>
                 </textarea>
 
 

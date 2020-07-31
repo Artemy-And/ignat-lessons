@@ -4,12 +4,14 @@ import {
     dialogsDataType,
     dialogsMessagesDataType,
 } from "./../components/Dialogs/Dialogs";
+import profileReducer from "./profile-reducer";
+import dialogsReducer from "./dialogs-reducer";
 
 
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
-const ADD_POST = "ADD-POST"
-const UPDATE_NEW_MESSAGE_TEXT ="UPDATE-NEW-MESSAGE-TEXT"
-const ADD_MESSAGE ="ADD-MESSAGE"
+// const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
+// const ADD_POST = "ADD-POST"
+// const UPDATE_NEW_MESSAGE_TEXT ="UPDATE-NEW-MESSAGE-TEXT"
+// const ADD_MESSAGE ="ADD-MESSAGE"
 export type stateTypeFirst = {
     _state: stateType
     getState: () => stateType
@@ -21,16 +23,15 @@ export type postsTypeState = {
     posts: Array<postsType>
     newPostText: string
 }
+
 export type dialogsTypeState = {
     dialogs: Array<dialogsDataType>
     messages: Array<dialogsMessagesDataType>
     newMessageText: string
-
 }
 export type stateType = {
     profilePage: postsTypeState
     dialogsPage: dialogsTypeState
-
 }
 
 
@@ -75,45 +76,11 @@ let store: stateTypeFirst = {
         console.log('state changed')
     },
     dispatch(action) {
-
-        if (action.type === ADD_POST) {
-            let newPost: postsType = {
-                id: 5,
-                message: this._state.profilePage.newPostText,
-                countLikes: 0
-            }
-            this._state.profilePage.posts.push(newPost)
-            this._state.profilePage.newPostText = ""
-            this.rerenderEntireTree(this._state);
-        } else if (action.type === UPDATE_NEW_POST_TEXT) {
-            this._state.profilePage.newPostText = action.newText
-            this.rerenderEntireTree(this._state);
-        } else if (action.type === "ADD-MESSAGE") {
-            let newMessage = {
-                id: 77,
-                message: this._state.dialogsPage.newMessageText
-            }
-            this._state.dialogsPage.messages.push(newMessage)
-            this._state.dialogsPage.newMessageText = ""
-            store.rerenderEntireTree(this._state)
-        } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
-            debugger;
-            this._state.dialogsPage.newMessageText = action.newMessageText1
-            this.rerenderEntireTree(this._state);
-        }
-
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+        this.rerenderEntireTree(this._state)
     }
 }
-export const addPostActionCreator = ()=>({type:ADD_POST})
-
-export const updateNEwPostTextActionCreator = (text:string)=>({
-    type: UPDATE_NEW_POST_TEXT, newText: text,})
-
-export const addMessageCreator = ()=>({type:ADD_MESSAGE})
-
-export const updateNEwMessageTextCreator = (text:string)=>({
-  type: UPDATE_NEW_MESSAGE_TEXT, newMessageText1: text,})
-
 
 
 export default store;
