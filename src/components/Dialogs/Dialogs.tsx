@@ -5,8 +5,8 @@ import Message from "./Message/Message";
 import {
     dialogsTypeState,
 } from "../../redux/state";
-import {addMessageCreator, updateNEwMessageTextCreator, DialogsActionType} from "../../redux/dialogs-reducer"
-import {ConnectedComponent} from "react-redux";
+// import {addMessageCreator, updateNEwMessageTextCreator, DialogsActionType} from "../../redux/dialogs-reducer"
+// import {ConnectedComponent} from "react-redux";
 
 
 export type dialogsDataType = {
@@ -28,6 +28,7 @@ type dialogsAndMessagesType = {
     addMessageCreator:()=>void
     dialogsPage:dialogsTypeState
     connect:Function
+    updateNEwMessageTextCreator:(text:string)=>void
     //DialogsContainer: ConnectedComponent<(props: dialogsAndMessagesType) => JSX.Element, Pick<dialogsAndMessagesType, "updateNewMessageText" | "connect">>
 
 
@@ -41,15 +42,12 @@ const Dialogs = (props: dialogsAndMessagesType) => {
 
 
     let newDialogs = state.dialogs.map((dialog: dialogsDataType) => {
-        return <DialogItem name={dialog.name} id={dialog.id}/>;
+        return <DialogItem name={dialog.name} id={dialog.id} key={dialog.id}/>;
     });
     let newDialogsMessages = state.messages.map((message: dialogsMessagesDataType) => (
-        <Message message={message.message}/>
+        <Message message={message.message} key={message.id}/>
     ));
-    let newMessageText = state.newMessageText;
-
-
-
+    // let newMessageText = state.newMessageText;
     // let newPostElement: any = React.createRef();
 
     let addPost = () => {
@@ -59,7 +57,7 @@ const Dialogs = (props: dialogsAndMessagesType) => {
 
     let onChangeMessage = (event: ChangeEvent<HTMLTextAreaElement>) => {
         let text = event.currentTarget.value
-        props.updateNewMessageText(text)
+        props.updateNEwMessageTextCreator(text)
 
 
     }

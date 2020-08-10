@@ -4,15 +4,18 @@ import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import {BrowserRouter, Route} from "react-router-dom";
 import Profile from "./components/Profile/Profile";
-import Dialogs from "./components/Dialogs/Dialogs";
+// import Dialogs from "./components/Dialogs/Dialogs";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import {stateType, stateTypeFirst} from "./redux/state";
+// import {stateType, stateTypeFirst} from "./redux/state";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
-import { DialogsActionType } from "./redux/dialogs-reducer";
-import { ProfileActionTypes } from "./redux/profile-reducer";
-import { Store } from "redux";
+// import { DialogsActionType } from "./redux/dialogs-reducer";
+// import { ProfileActionTypes } from "./redux/profile-reducer";
+// import { Store } from "redux";
+// import {Users} from "./components/Users/Users";
+import UsersContainer from "./components/Users/UsersContainer";
+import {Friends} from "./components/API/friends";
 
 
 type PropsType = {
@@ -32,6 +35,7 @@ const App = () => {
     return (
 
         <BrowserRouter>
+
             <div className="app-wrapper">
                 <Header/>
                 <Navbar/>
@@ -40,28 +44,26 @@ const App = () => {
                     <Route
                         exact
                         path="/dialogs"
-                        render={() => <DialogsContainer
-                            // store={props.store}
-
-                        />
-                        }
+                        render={() => <DialogsContainer/>}
                     />
 
                     <Route
                         path="/profile"
                         render={() => {
-                            return <Profile
-
-                                // store={props.store}
-                            />;
-                        }}
+                            return <Profile/>;}}
                     />
+                    <Route path="/users" render={()=><UsersContainer/>}/>
+
                     <Route path="/news" component={News}/>
                     <Route path="/music" component={Music}/>
                     <Route path="/settings" component={Settings}/>
+
+
                 </div>
             </div>
+            
         </BrowserRouter>
+
     );
 };
 

@@ -20,7 +20,18 @@
   grid-area: c;
   background-color: ghostwhite;
 }
-.app-wrapper-content img {
+/*.app-wrapper-content img {*/
+/*  height: 400px;*/
+/*  width: 100%;*/
+/*}*/
+
+.app-wrapper-content {
   height: 400px;
   width: 100%;
+}
+
+.header img {
+  width: 50px;
+  color: black;
+  background-color: black;
 }
