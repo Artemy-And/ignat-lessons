@@ -12,3 +12,10 @@
 font-size: 25px;
   padding: 17px;
 }
+.loginBlock{
+  float: right;
+}
+
+.loginBlock a {
+  color:white;
+}

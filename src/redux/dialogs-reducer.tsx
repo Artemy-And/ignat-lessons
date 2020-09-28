@@ -1,6 +1,6 @@
 import {stateType, dialogsTypeState} from "./state"
 
-const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT"
+// const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT"
 const ADD_MESSAGE = "ADD-MESSAGE"
 
 let initialState = {
@@ -33,16 +33,16 @@ function dialogsReducer(state: dialogsTypeState = initialState, action: DialogsA
 
 
     switch (action.type) {
-        case UPDATE_NEW_MESSAGE_TEXT: {
-            stateCopy = {
-                ...state,
-                newMessageText: action.newMessageText1
-            };
-            return stateCopy
-        }
+        // case UPDATE_NEW_MESSAGE_TEXT: {
+        //     stateCopy = {
+        //         ...state,
+        //         newMessageText: action.newMessageText1
+        //     };
+        //     return stateCopy
+        // }
         case ADD_MESSAGE: {
 
-            let newMessage = state.newMessageText
+            let newMessage = action.newMessageText
             let stateCopy = {
                 ...state,
                 newMessageText: "",
@@ -61,20 +61,22 @@ function dialogsReducer(state: dialogsTypeState = initialState, action: DialogsA
 
 }
 
-export type DialogsActionType = AddMessageCreatorType | UpdateNEwMessageTextCreator
+export type DialogsActionType = AddMessageCreatorType
+    // UpdateNEwMessageTextCreator
 
 type AddMessageCreatorType = {
     type: typeof ADD_MESSAGE
+    newMessageText:string
 }
-type UpdateNEwMessageTextCreator = {
-    type: typeof UPDATE_NEW_MESSAGE_TEXT;
-    newMessageText1: string
-}
+// type UpdateNEwMessageTextCreator = {
+//     type: typeof UPDATE_NEW_MESSAGE_TEXT;
+//     newMessageText1: string
+// }
 
-export const addMessageCreator = (): AddMessageCreatorType => ({type: ADD_MESSAGE})
+export const addMessageCreator = (newMessageText:string): AddMessageCreatorType => ({type: ADD_MESSAGE,newMessageText})
 
-export const updateNEwMessageTextCreator = (text: string): UpdateNEwMessageTextCreator => ({
-    type: UPDATE_NEW_MESSAGE_TEXT, newMessageText1: text,
-})
+// export const updateNEwMessageTextCreator = (text: string): UpdateNEwMessageTextCreator => ({
+//     type: UPDATE_NEW_MESSAGE_TEXT, newMessageText1: text,
+// })
 
 export default dialogsReducer

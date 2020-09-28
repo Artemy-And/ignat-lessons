@@ -1,62 +1,23 @@
+import {userAPI} from "../api/api";
+import {updateObjectInArray} from "../utils/object-helpers";
+
 const UNFOLLOW = "UNFOLLOW"
 const FOLLOW = "FOLLOW_UP"
 const SET_USERS = "SET_USERS"
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
+const SET_TOTAL_COUNT = "SET_TOTAL_COUNT"
+const IS_FETCHING = "IS_FETCHING"
+const IS_FOLLOWING_PROGRESS = "IS_FOLLOWING_PROGRESS"
 
 
-type LocationType = {
-    city: string
-    country: string
-}
-
-export type usersType = {
-    id: number
-    photoUrl:any
-    followed: boolean
-    FullName: string
-    status: string
-    location: LocationType
-}
-export type usersTypeAll = {
-    users: Array<usersType>
-}
 
 let initialState = {
-    users: [
-        {
-            id: 1,
-            photoUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRw5yWfC9hIIKyp6Al3g5T-VOi-iq7zR3DNRwhAmGprnImKaHMw-857V7IDuQMn7aK2Gb3YenlD2XOXcPEs6Esrm0uZ-XaJ&usqp=CAU",
-            followed: true,
-            FullName: "Artemii",
-            status: "i am looking for new info",
-            location: {
-                city: "Moscow",
-                country: "Russia"
-            }
-        },
-        {
-            id: 2,
-            photoUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRw5yWfC9hIIKyp6Al3g5T-VOi-iq7zR3DNRwhAmGprnImKaHMw-857V7IDuQMn7aK2Gb3YenlD2XOXcPEs6Esrm0uZ-XaJ&usqp=CAU",
-            followed: false,
-            FullName: "George",
-            status: "i am studing english right now",
-            location: {
-                city: "Vancouver",
-                country: "Canada"
-            }
-        },
-        {
-            id: 3,
-            photoUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRw5yWfC9hIIKyp6Al3g5T-VOi-iq7zR3DNRwhAmGprnImKaHMw-857V7IDuQMn7aK2Gb3YenlD2XOXcPEs6Esrm0uZ-XaJ&usqp=CAU",
-            followed: true,
-            FullName: "Oksana",
-            status: "i am doing massage",
-            location: {
-                city: "Archangelsk",
-                country: "Russia"
-            }
-        }
-    ],
-    newPostText: 'it-kamasutra'
+    users: [],
+    pageSize: 10,
+    totalUsersCount: 0,
+    currentPage: 1,
+    isFetching: false,
+    followingInProgress: [2, 3]
 }
 
 
@@ -65,30 +26,46 @@ function usersReducer(state: usersTypeAll = initialState, action: UserActionType
         case FOLLOW:
             return {
                 ...state,
-                // users:[...state.users],
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: true}
-                    }
-                    return u
-                })
-            }
+                users:updateObjectInArray(state.users,action.userId,'id',{followed:true})
 
+                // users: state.users.map(u => {
+                //     if (u.id === action.userId) {
+                //         return {...u, followed: true}
+                //     }
+                //     return u
+                // })
+            }
         case UNFOLLOW:
             return {
                 ...state,
-                // users:[...state.users],
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: false}
-                    }
-                    return u
-                })
+                /////// users:[...state.users],
+                // users: state.users.map(u => {
+                //     if (u.id === action.userId) {
+                //         return {...u, followed: false}
+                //     }
+                //     return u
+                // })
+                users:updateObjectInArray(state.users,action.userId,'id',{followed:false})
             }
-
         case SET_USERS:
-            return {...state, users:[...state.users, ...action.users] }//взять старый стей и пользовтелей которые там были и перезатеретт весь массив
-
+            return {...state, users: action.users}//взять старый стей и пользовтелей которые там были и перезатеретт весь массив
+        case SET_CURRENT_PAGE: {
+            return {...state, currentPage: action.currentPage}
+        }
+        case SET_TOTAL_COUNT: {
+            return {...state, totalUsersCount: action.totalCount}
+        }
+        case IS_FETCHING: {
+            return {...state, isFetching: action.isFetching}
+        }
+        case IS_FOLLOWING_PROGRESS: {
+            return {
+                ...state,
+                followingInProgress: action.isFetching
+                    ? [...state.followingInProgress, action.userId]
+                    : state.followingInProgress.filter(id => id != action.userId)
+            }
+        }
         default:
             return state
     }
@@ -96,15 +73,123 @@ function usersReducer(state: usersTypeAll = initialState, action: UserActionType
 
 }
 
-export const followActionCreator = (userId: any): FollowActionCreatorType => ({type: FOLLOW, userId})
+export const follow = (userId: any): FollowActionCreatorType => ({type: FOLLOW, userId})
 
-export const unFollowActionCreator = (userId: any): UnFollowActionCreatorType => ({type: UNFOLLOW, userId})
-export const setUsetAC = (users: any): setUsetACType => ({type: SET_USERS, users})
+export const unFollow = (userId: any): UnFollowActionCreatorType => ({type: UNFOLLOW, userId})
+export const setUsers = (users: any): setUsetACType => ({type: SET_USERS, users})
+export const setCurrentPage = (currentPage: number): setCurrentPageACType => ({
+    type: SET_CURRENT_PAGE, currentPage: currentPage
+})
+export const setTotalUsersCount = (totalCount: number): setTotalCountACType => ({
+    type: SET_TOTAL_COUNT, totalCount: totalCount
+})
+export const toggleIsFetching = (isFetching: boolean): isFetchingACType => ({
+    type: IS_FETCHING, isFetching: isFetching
+})
+export const isFollowingInProgress = (isFetching: boolean, userId: number): isFollowingInProgressType => ({
+    type: IS_FOLLOWING_PROGRESS, isFetching: isFetching, userId: userId
+})
+
+///////***********образец САНКИ первый вариант*****************///////////////
+
+// export const getUsersThunk = (dispatch:any)=>{
+//    dispatch.toggleIsFetching(true)
+//     userAPI.getUsers(this.props.currentPage, this.props.pageSize).then((data:any) => {
+//         dispatch.toggleIsFetching(false)
+//         dispatch.setUsers(data.items)
+//         dispatch.setTotalUsersCount(data.totalCount)
+//     });
+// }
+
+///////***********  образец САНКИ второй вариант с создателем САНКИ который нам её возвращает  *****************///////////////
+// getUsersThunkСreator
+export const getUsersTC = (page: any, pageSize: any) => {
+    return async (dispatch: any) => {
+        dispatch(toggleIsFetching(true))
+        dispatch(setCurrentPage(page))
+        let data = await userAPI.getUsers(page, pageSize)
+        dispatch(toggleIsFetching(false))
+        dispatch(setUsers(data.items))
+        dispatch(setTotalUsersCount(data.totalCount))
+
+    }
+}
+
+export const unFollowThunkCreator = (userID: number) => {
+    return async (dispatch: any) => {
+        dispatch(isFollowingInProgress(true, userID))
+        let data = await userAPI.unFollowUsers(userID)
+        if (data.resultCode === 0) {
+            dispatch(unFollow(userID))
+        }
+        dispatch(isFollowingInProgress(false, userID))
+
+    }
+}
+export const followThunkCreator = (userID: number) => {
+    return async (dispatch: any) => {
+        dispatch(isFollowingInProgress(true, userID))
+        let data = await userAPI.followUsers(userID)
+        if (data.resultCode === 0) {
+            dispatch(follow(userID))
+        }
+        dispatch(isFollowingInProgress(false, userID))
+
+    }
+}
 
 
-export type UserActionTypes = FollowActionCreatorType | UnFollowActionCreatorType|setUsetACType
+type LocationType = {
+    city: string
+    country: string
+}
+export type usersType = {
+    id: number
+    photoUrl: any
+    followed: boolean
+    name: string
+    status: string
+    location: LocationType
+}
+export type usersTypeAll = {
+    users: Array<usersType>
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
+    isFetching: boolean
+    followingInProgress: Array<number>
+}
 
 
+export type UserActionTypes =
+    FollowActionCreatorType
+    | UnFollowActionCreatorType
+    | setUsetACType
+    | setCurrentPageACType
+    | setTotalCountACType
+    | isFetchingACType
+    | isFollowingInProgressType
+
+
+type isFollowingInProgressType = {
+    type: typeof IS_FOLLOWING_PROGRESS
+    isFetching: boolean
+    userId: number
+}
+type isFetchingACType = {
+    type: typeof IS_FETCHING
+    isFetching: boolean
+}
+
+type setTotalCountACType = {
+    type: typeof SET_TOTAL_COUNT
+    totalCount: number
+}
+
+type setCurrentPageACType = {
+    type: typeof SET_CURRENT_PAGE
+    currentPage: any
+}
 type FollowActionCreatorType = {
     type: typeof FOLLOW
     userId: any

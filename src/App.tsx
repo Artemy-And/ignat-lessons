@@ -1,58 +1,64 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
-import {BrowserRouter, Route} from "react-router-dom";
-import Profile from "./components/Profile/Profile";
-// import Dialogs from "./components/Dialogs/Dialogs";
+import {BrowserRouter, Route, withRouter} from "react-router-dom";
+
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-// import {stateType, stateTypeFirst} from "./redux/state";
-import DialogsContainer from "./components/Dialogs/DialogsContainer";
-// import { DialogsActionType } from "./redux/dialogs-reducer";
-// import { ProfileActionTypes } from "./redux/profile-reducer";
-// import { Store } from "redux";
-// import {Users} from "./components/Users/Users";
 import UsersContainer from "./components/Users/UsersContainer";
-import {Friends} from "./components/API/friends";
+import HeaderContainer from "./components/Header/HeaderContainer";
+import {Login} from "./components/login/Login";
+import {compose} from "redux";
+import {connect, Provider} from "react-redux";
+import {initializeAppTC} from "./redux/app-reducer";
+import ToggleIsFetching from "./components/common/ToggleIsFetching";
+import store from "./redux/redux-store";
+import {withSuspence} from "./hoc/withSuspence";
+
+// Этот компонент загружается динамически
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+// import ProfileContainer from "./components/Profile/ProfileContainer";
+// import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
 
-type PropsType = {
-    // state: stateType
+class App extends React.Component<any, any> {
+    componentDidMount() {
+        this.props.initializeAppTC()
+    }
 
-    // store: Store
-    // value:any
-
-    // dispatch: (action: any) => void
-    // dispatch: (action: DialogsActionType|ProfileActionTypes) => void
-
-}
-
-const App = () => {
-    // let stateRedux = props.store.getState()//это уже redux
-
-    return (
-
-        <BrowserRouter>
+    render() {
+        if (!this.props.initialized) {
+            return <ToggleIsFetching/>
+        }
+        return (
 
             <div className="app-wrapper">
-                <Header/>
+                <HeaderContainer/>
                 <Navbar/>
 
                 <div className="app-wrapper-content">
                     <Route
                         exact
                         path="/dialogs"
-                        render={() => <DialogsContainer/>}
+                        //вариант загрузки DialogsComponent с HOC withSuspence
+                        render={withSuspence(DialogsContainer)}
                     />
 
                     <Route
-                        path="/profile"
-                        render={() => {
-                            return <Profile/>;}}
+                        path='/profile/:userId?'
+                        render={() =>
+                            //вариант загрузки DialogsComponent без HOC withSuspence
+                            <React.Suspense fallback={<ToggleIsFetching/>}>
+                                <div>
+                                    <ProfileContainer/>
+                                </div>
+                            </React.Suspense>
+                        }
                     />
-                    <Route path="/users" render={()=><UsersContainer/>}/>
+                    <Route path="/users" render={() => <UsersContainer/>}/>
+                    <Route path="/login" render={() => <Login/>}/>
 
                     <Route path="/news" component={News}/>
                     <Route path="/music" component={Music}/>
@@ -61,11 +67,25 @@ const App = () => {
 
                 </div>
             </div>
-            
-        </BrowserRouter>
 
-    );
-};
 
-export default App;
+        );
+    }
+}
+
+const mapStateToProps = (state: any) => ({
+    initialized: state.app.initialized
+})
+
+export let AppContainer = compose<React.ComponentType>(
+    withRouter,
+    connect(mapStateToProps, {initializeAppTC}))(App);
+
+export const SocialTSApp = (props: any) => {
+    return (<BrowserRouter>
+        <Provider store={store}>
+            <AppContainer/>
+        </Provider>
+    </BrowserRouter>)
+}
 

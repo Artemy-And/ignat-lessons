@@ -21,21 +21,24 @@ export type stateTypeFirst = {
 }
 export type postsTypeState = {
     posts: Array<postsType>
-    newPostText: string
+
+    profile:any
+    status:string
 }
 
 export type dialogsTypeState = {
     dialogs: Array<dialogsDataType>
     messages: Array<dialogsMessagesDataType>
-    newMessageText: string
+    newMessageText:string
 }
 export type stateType = {
     profilePage: postsTypeState
     dialogsPage: dialogsTypeState
+    auth:any
 }
 
-
-let store: stateTypeFirst = {
+// let store: stateTypeFirst = {
+let store: any = {
     _state: {
         profilePage: {
             posts: [
@@ -43,7 +46,8 @@ let store: stateTypeFirst = {
                 {id: 2, message: "Hi, how are you?", countLikes: 133},
                 {id: 3, message: "Hi, how are you?", countLikes: 4432},
             ],
-            newPostText: 'it-kamasutra'
+            newPostText: 'it-kamasutra',
+            profile:null
         },
         dialogsPage: {
             dialogs: [
@@ -75,7 +79,7 @@ let store: stateTypeFirst = {
     rerenderEntireTree(state: any) {
         console.log('state changed')
     },
-    dispatch(action) {
+    dispatch(action:any) {
         this._state.profilePage = profileReducer(this._state.profilePage, action)
         this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
         this.rerenderEntireTree(this._state)
