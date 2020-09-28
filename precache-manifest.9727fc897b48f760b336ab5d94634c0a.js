@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "23bd20238d39f84bf8f6bf168aa58d51",
+    "revision": "3511dc13a72aca675e72467571f60a8c",
     "url": "/logistics-social-network/index.html"
   },
   {
@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/logistics-social-network/static/css/4.9950c3a6.chunk.css"
   },
   {
-    "revision": "399a956c0994f0ea4d91",
+    "revision": "0d97cff191eab9dc2b1e",
     "url": "/logistics-social-network/static/css/main.4e547475.chunk.css"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/logistics-social-network/static/js/4.cd256ed1.chunk.js"
   },
   {
-    "revision": "399a956c0994f0ea4d91",
-    "url": "/logistics-social-network/static/js/main.b76e210a.chunk.js"
+    "revision": "0d97cff191eab9dc2b1e",
+    "url": "/logistics-social-network/static/js/main.54362e3b.chunk.js"
   },
   {
     "revision": "916ab50ad985513a0ab4",
