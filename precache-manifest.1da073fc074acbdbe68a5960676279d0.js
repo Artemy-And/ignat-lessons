@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "3511dc13a72aca675e72467571f60a8c",
+    "revision": "458b6d2dd76bc2106caee5f774fd3c27",
     "url": "/logistics-social-network/index.html"
   },
   {
@@ -8,36 +8,36 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/logistics-social-network/static/css/3.bcd8879f.chunk.css"
   },
   {
-    "revision": "d7e63fd1e7aab3f7ac0a",
+    "revision": "4497bba097d6d24560e5",
     "url": "/logistics-social-network/static/css/4.9950c3a6.chunk.css"
   },
   {
-    "revision": "0d97cff191eab9dc2b1e",
+    "revision": "5d08ea1fb7c6eeb89425",
     "url": "/logistics-social-network/static/css/main.4e547475.chunk.css"
   },
   {
-    "revision": "769f4e5063c49dfd805a",
-    "url": "/logistics-social-network/static/js/2.1c649c72.chunk.js"
+    "revision": "aeb21927b725daeee893",
+    "url": "/logistics-social-network/static/js/2.580be351.chunk.js"
   },
   {
     "revision": "c64c486544348f10a6d6c716950bc223",
-    "url": "/logistics-social-network/static/js/2.1c649c72.chunk.js.LICENSE.txt"
+    "url": "/logistics-social-network/static/js/2.580be351.chunk.js.LICENSE.txt"
   },
   {
     "revision": "784d1d1939d517cb21e1",
     "url": "/logistics-social-network/static/js/3.f206e492.chunk.js"
   },
   {
-    "revision": "d7e63fd1e7aab3f7ac0a",
-    "url": "/logistics-social-network/static/js/4.cd256ed1.chunk.js"
+    "revision": "4497bba097d6d24560e5",
+    "url": "/logistics-social-network/static/js/4.422308bb.chunk.js"
   },
   {
-    "revision": "0d97cff191eab9dc2b1e",
-    "url": "/logistics-social-network/static/js/main.54362e3b.chunk.js"
+    "revision": "5d08ea1fb7c6eeb89425",
+    "url": "/logistics-social-network/static/js/main.59078a37.chunk.js"
   },
   {
-    "revision": "916ab50ad985513a0ab4",
-    "url": "/logistics-social-network/static/js/runtime-main.1dfdb625.js"
+    "revision": "b455d01ec24bd4326886",
+    "url": "/logistics-social-network/static/js/runtime-main.8a75bdc2.js"
   },
   {
     "revision": "b3e90dfeb6b3b2de52eddd2c94ab19ab",
