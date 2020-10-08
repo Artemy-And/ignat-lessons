@@ -6,20 +6,10 @@ import {Paginator} from "../common/Paginator/Paginator";
 
 
 type usersType = {
-
     users: any
-    // totalUsersCount: number
-    // onPageChanged: (p: number) => void
-    // unFollow: (userId: any) => void
-    // follow: (userId: any) => void
-    // name: string
-    // status: any
-    // // isFollowingInProgress: any
     followingInProgress: Array<number>
     unFollowThunkCreator: (userID: number) => void
     followThunkCreator: (userID: number) => void
-
-
 }
 
 

@@ -39,30 +39,50 @@ export const userAPI = {
 
 export const profileAPI = {
 
-    getProfile(userId: number) {
-        return instance.get(`profile/${userId}/`)
+    getProfile(userId: any) {
+        return instance.get(`profile/${userId}`)
     },
     getStatus(userId: number) {
-        return instance.get(`profile/status/${userId}/`)
+        return instance.get(`profile/status/${userId}`)
     },
     updateStatus(status:any){
         return instance.put('profile/status/',{status:status})
+    },
+       saveProfile(profile:any){
+        return instance.put('profile',profile)
+    },
+
+    savePhoto(photoFile:any){
+    const formData = new FormData();
+    formData.append('image',photoFile )
+
+    return instance.put('profile/photo',formData,{
+    headers:{
+            'Content-Type':'multipart/form-data'
+            }
+        })
     }
 
 }
+export const securityAPI = {
+  getCaptchaUrl(){
+    return instance.get('security/get-captcha-url')
+    }
+    }
 
 export const authAPI = {
      me(){
-    return instance.get('auth/me')
+    return instance.get<ResponseType<AuthMeType>>('auth/me').then(res => res.data)
     },
+
     authUsers() {
         return instance.get("auth/me")
             .then((response: any) => {
                 return response.data
             });
     },
-    login(email:string,password:string,rememberMe:boolean = false){
-    return instance.post(`auth/login`,{email,password,rememberMe});
+    login(email:string,password:string,rememberMe:boolean = false, captcha:any=null){
+    return instance.post(`auth/login`,{email,password,rememberMe,captcha});
     },
     logOut(){
     return instance.delete(`auth/login`);
@@ -70,6 +90,18 @@ export const authAPI = {
 
 }
 
+export type AuthMeType = {
+    email: string
+    login: string
+    id: number
+}
+
+type ResponseType<T> = {
+    data: T
+    fieldsError: string[]
+    messages: string[]
+    resultCode: number
+}
 // export const setLoginAPI = {
 //     authLogin(email:string,password:string){
 //        const promise = instance.post<any>(`auth/login/`,{email},{password})

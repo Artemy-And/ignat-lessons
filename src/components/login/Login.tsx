@@ -9,17 +9,18 @@ import {AppRootStateType} from "../../redux/redux-store";
 import style from '../common/FormsControls/FormControls.module.css'
 
 
-
 type FormDataType = {
     email: string
     password: string
     rememberMe: boolean
+    captcha?:any
 }
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit,error}) => {
+const LoginForm: React.FC<InjectedFormProps<any>> = (props:any) => {
 
+console.log(props.captchaUrl)
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={props.handleSubmit}>
             <div>
                 <Field placeholder={'Email'} name={'email'} component={Input} validate={[required]}/>
             </div>
@@ -30,8 +31,15 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit,erro
             <div>
                 <Field component={Input} name={'rememberMe'} type={'checkbox'}/> remember me
             </div>
-            {error &&  <div className={style.formSummaryError}>
-                {error}
+            {props.captchaUrl && <img src={props.captchaUrl}/>}
+            {props.captchaUrl && <div>
+                <Field placeholder={'symbols from image'} name={'captcha'} validate={[required]} component={Input}/> remember me
+            </div>}
+        
+
+
+            {props.error && <div className={style.formSummaryError}>
+                {props.error}
             </div>}
 
             <div>
@@ -41,23 +49,24 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit,erro
     )
 }
 
-const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
+const LoginReduxForm:any = reduxForm<any>({form: 'login'})(LoginForm)
 
 
 export const Login = (props: any) => {
     const isAuth = useSelector<AppRootStateType, any>((state) => state.auth.isAuth)
+    const captchaUrl =useSelector<AppRootStateType,any>(state => state.auth.captchaUrl)
     const dispatch = useDispatch();
 
     const onSubmit = (formData: FormDataType) => {
 
-        dispatch(loginTC(formData.email, formData.password, formData.rememberMe))
+        dispatch(loginTC(formData.email, formData.password, formData.rememberMe, formData.captcha))
     }
-    if (isAuth){
+    if (isAuth) {
         return <Redirect to={'/profile'}/>
     }
     return (<div>
             <h1>LOGIN</h1>
-            <LoginReduxForm onSubmit={onSubmit}/>
+            <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl}/>
         </div>
 
     )

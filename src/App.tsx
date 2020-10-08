@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
-import {BrowserRouter, Route, withRouter} from "react-router-dom";
+import {HashRouter, Route, withRouter} from "react-router-dom";
 
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
@@ -24,8 +24,20 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 
 
 class App extends React.Component<any, any> {
+//необходимо задиспачить тут ошибку которую нужно создать в app reducer 47 минута
+    catchAllUnhandledErrors = (reason: any, promise: any) => {
+        alert('Some error');
+    }
+
     componentDidMount() {
         this.props.initializeAppTC()
+        // @ts-ignore
+        window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+    }
+
+    componentWillUnmount() {
+        // @ts-ignore
+        window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
     }
 
     render() {
@@ -82,10 +94,10 @@ export let AppContainer = compose<React.ComponentType>(
     connect(mapStateToProps, {initializeAppTC}))(App);
 
 export const SocialTSApp = (props: any) => {
-    return (<BrowserRouter>
+    return (<HashRouter>
         <Provider store={store}>
             <AppContainer/>
         </Provider>
-    </BrowserRouter>)
+    </HashRouter>)
 }
 

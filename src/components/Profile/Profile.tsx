@@ -8,6 +8,9 @@ type PropsType = {
     status: string
     getUpdateUserStatus: (status: string) => void
     isAuth: any
+    isOwner: any
+    getSavePhotoTC: any
+    getSaveInfoTC: any
 }
 
 
@@ -15,7 +18,14 @@ const Profile = React.memo((props: PropsType) => {
     console.log('profile')
     return (
         <div>
-            <ProfileItem profile={props.profile} status={props.status} getUpdateUserStatus={props.getUpdateUserStatus}/>
+            <ProfileItem getSavePhotoTC={props.getSavePhotoTC}
+                         isOwner={props.isOwner}
+                         profile={props.profile}
+                         status={props.status}
+                         getUpdateUserStatus={props.getUpdateUserStatus}
+                         getSaveInfoTC={props.getSaveInfoTC}
+            />
+
             <MyPostsContainer/>
         </div>
     );

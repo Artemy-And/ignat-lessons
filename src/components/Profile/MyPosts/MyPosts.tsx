@@ -20,7 +20,7 @@ export type propsType = {
 
 const MyPosts = React.memo((props: propsType) => {
     let newMessagesData = props.posts.map((item:any) => {
-        return <Post message={item.message} likesCount={item.countLikes}/>;
+        return <Post key={item.id} message={item.message} likesCount={item.countLikes}/>;
     });
 
     const addNewPost = (value:any) => {

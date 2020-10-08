@@ -1,12 +1,16 @@
 import {postsType} from "../components/Profile/MyPosts/MyPosts"
 import {postsTypeState} from "./state";
 import {profileAPI, userAPI} from "../api/api";
+import {Dispatch} from "redux";
+import {stopSubmit} from "redux-form";
+import {rejects} from "assert";
 
 const ADD_POST = "ADD-POST"
 const SET_USER_PROFILE = "SET_USER_PROFILE"
 const SET_STATUS_PROFILE = "SET_STATUS_PROFILE"
 const SET_STATUS_UPDATE = "SET_STATUS_UPDATE"
 const DELETE_POST = "DELETE_POST"
+const SET_SAVE_PHOTO = "SET_SAVE_PHOTO"
 
 
 let initialState: postsTypeState = {
@@ -48,6 +52,8 @@ function profileReducer(state: postsTypeState = initialState, action: ProfileAct
 
             return {...state, posts: state.posts.filter(p => p.id != action.postId)}
         }
+        case SET_SAVE_PHOTO:
+            return {...state, profile: {...state.profile, photos: action.photo}}
 
 
         default:
@@ -62,6 +68,7 @@ export const addPostActionCreator = (newPostText: string): AddPostActionCreatorT
 
 export const setUserProfile = (profile: any): setUserProfileType => ({
     type: SET_USER_PROFILE, profile: profile
+
 })
 
 export const setStatusProfile = (status: string): setStatusProfileType => ({
@@ -73,8 +80,11 @@ export const setStatusUpdate = (status: string): setStatusUpdateType => ({
 export const deletePostAC = (postId: number): deletePostType => ({
     type: DELETE_POST, postId
 })
+export const setSavePhotoAC = (photo: number): setSavePhotoType => ({
+    type: SET_SAVE_PHOTO, photo
+})
 
-export const getUserProfile = (userId: number) => async (dispatch: any) => {
+export const getUserProfile = (userId: any) => async (dispatch: Dispatch) => {
     let response = await userAPI.getProfile(userId)
     dispatch(setUserProfile(response.data))
 
@@ -86,12 +96,32 @@ export const getUserStatus = (userId: number) => async (dispatch: any) => {
 
 }
 export const getUpdateUserStatus = (status: string) => async (dispatch: any) => {
-    let response = await profileAPI.updateStatus(status)
-    if (response.data.resultCode === 0) {
-        dispatch(setStatusUpdate(status))
+    try {
+        let response = await profileAPI.updateStatus(status)
+        if (response.data.resultCode === 0) {
+            dispatch(setStatusUpdate(status))
+        }
+    }
+    catch (error){
+        alert(error)
     }
 
-
+}
+export const getSavePhotoTC = (file: any) => async (dispatch: Dispatch) => {
+    let response = await profileAPI.savePhoto(file)
+    if (response.data.resultCode === 0) {
+        dispatch(setSavePhotoAC(response.data.data.photos))
+    }
+}
+export const getSaveInfoTC = (profile: any) => async (dispatch: any, getState:any) => {
+    const userIds:any = getState().auth.userId
+    const response = await profileAPI.saveProfile(profile)
+    if (response.data.resultCode === 0) {
+        dispatch(getUserProfile(userIds))
+    } else{
+        dispatch(stopSubmit('profileDataForm', {_error: response.data.messages[0]}));//ёто нужно будет потом распарсить
+        return Promise.reject(response.data.messages[0])
+    }
 }
 
 export type ProfileActionTypes =
@@ -100,8 +130,13 @@ export type ProfileActionTypes =
     | setStatusProfileType
     | setStatusUpdateType
     | deletePostType
+    | setSavePhotoType
 
 
+type setSavePhotoType = {
+    type: typeof SET_SAVE_PHOTO
+    photo: any
+}
 type setStatusUpdateType = {
     type: typeof SET_STATUS_UPDATE
     status: string
