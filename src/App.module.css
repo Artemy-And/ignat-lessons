@@ -1,0 +1,40 @@
+.appWrapper {
+    margin: 0 auto;
+    display: grid;
+    width: 1200px;
+
+
+
+    grid-template-rows: 60px 1fr;
+
+    grid-template-columns: 2fr 8fr 2fr;
+    /* grid-gap: 10px; */
+    grid-template-areas: "h h h"
+    "n c a"
+
+}
+
+.appWrapperContent {
+    grid-area: c;
+    background-color: ghostwhite;
+}
+.asside{
+    background-color: #E9EBEE;
+    grid-area: a;
+}
+
+/*.app-wrapper-content img {*/
+/*  height: 400px;*/
+/*  width: 100%;*/
+/*}*/
+
+/*.app-wrapper-content {*/
+/*    !*height: 400px;*!*/
+/*    width: 100%;*/
+/*}*/
+
+.header img {
+    width: 50px;
+    color: black;
+    background-color: black;
+}

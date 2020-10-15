@@ -22,13 +22,13 @@ export const Paginator = ({pageSize, currentPage, totalItemsCount, onPageChanged
     //ниже получили сколбко всего будет страниц, так как задали размер одной страницы 10 users
     let portionCount = Math.ceil(pageCount / portionSize)
 
-    let [portionNumber, setPortionNumber] = useState(1)
+    let [portionNumber, setPortionNumber] = useState<number>(1)
     let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1
     let rightPortionPageNumber = portionNumber * portionSize
     console.log(portionCount)
     // console.log(portionNumber)
     return (
-        <div>{portionNumber > 1 && <button onClick={() => setPortionNumber(portionNumber - 1)}>prev</button>}
+        <div>{portionNumber > 1 && <button className={styles.myButton} onClick={() => setPortionNumber(portionNumber - 1)}>prev</button>}
             {pages.filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
                 .map(p => {
                     return <span
@@ -40,7 +40,7 @@ export const Paginator = ({pageSize, currentPage, totalItemsCount, onPageChanged
                     {p}</span>
                 })
             }
-            {portionCount > portionNumber && <button onClick={() => setPortionNumber(portionNumber + 1)}>Next</button>}
+            {portionCount > portionNumber && <button className={styles.myButton} onClick={() => setPortionNumber(portionNumber + 1)}>Next</button>}
 
         </div>
     )

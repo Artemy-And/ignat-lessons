@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {
     follow, followThunkCreator, getUsersTC, setCurrentPage,
-    unFollow, unFollowThunkCreator
+    unFollow, unFollowThunkCreator, UsersType
 } from "../../redux/user-reducer";
 import {Users} from "./UserFunc";
 import ToggleIsFetching from "../common/ToggleIsFetching";
@@ -15,9 +15,36 @@ import {
     getTotalUsersCount,
     getUsersSelector
 } from "../../redux/users-selectors";
+import {AppRootStateType} from "../../redux/redux-store";
 
 
-export class UsersContainer extends React.Component<any, any> {
+type MapStatePropsType = {
+    currentPage: number
+    pageSize: number
+    isFetching: boolean
+    users: Array<UsersType>
+    totalUsersCount: number
+    followingInProgress: Array<number>
+}
+
+type MapDispatchToPropsType = {
+    getUsersTC: (currentPage: number, pageSize: number) => void
+    follow: (userId: any) => void
+    unFollow: (userId: any) => void
+    followThunkCreator: (userID: number) => void
+    unFollowThunkCreator: (userID: number) => void
+}
+
+type OwnPropsType = {
+    pageTitle: string
+    name: string
+    status: any
+}
+
+type PropsType = OwnPropsType & MapDispatchToPropsType & MapStatePropsType
+
+
+export class UsersContainer extends React.Component<PropsType, any> {
     componentDidMount() {
         this.props.getUsersTC(this.props.currentPage, this.props.pageSize)
     }
@@ -29,6 +56,7 @@ export class UsersContainer extends React.Component<any, any> {
     render() {
 
         return <>
+            <h2>{this.props.pageTitle}</h2>
             {this.props.isFetching ? <ToggleIsFetching/> : null}
             <Users pageSize={this.props.pageSize}
                    currentPage={this.props.currentPage}
@@ -42,7 +70,6 @@ export class UsersContainer extends React.Component<any, any> {
                    followingInProgress={this.props.followingInProgress}
                    followThunkCreator={this.props.followThunkCreator}
                    unFollowThunkCreator={this.props.unFollowThunkCreator}
-                   // setCurrentPage={this.props.setCurrentPage}
 
 
             />
@@ -51,7 +78,8 @@ export class UsersContainer extends React.Component<any, any> {
     }
 }
 
-let mapStateToProps = (state: any) => {//в нашем первом объекте мы берем данные из STATE, смысл этой функции замапить стейт на пропсы и превратить чать стейта в пропсы
+
+let mapStateToProps = (state: AppRootStateType) => {//в нашем первом объекте мы берем данные из STATE, смысл этой функции замапить стейт на пропсы и превратить чать стейта в пропсы
     return {
         users: getUsersSelector(state),
         pageSize: getPageSize(state),
@@ -65,9 +93,15 @@ let mapStateToProps = (state: any) => {//в нашем первом объект
 }
 
 
-
-export default compose<React.ComponentType>(
-    connect(mapStateToProps, {follow, unFollow, setCurrentPage, followThunkCreator, unFollowThunkCreator, getUsersTC}),
-    // withAuthRedirect
-
+export default compose<React.ComponentType<any>>(
+    connect<MapStatePropsType, MapDispatchToPropsType, OwnPropsType, AppRootStateType>(
+        mapStateToProps, {
+        follow,
+        unFollow,
+        // setCurrentPage,
+        followThunkCreator,
+        unFollowThunkCreator,
+        getUsersTC
+    }),
+    // withAut hRedirect
 )(UsersContainer)

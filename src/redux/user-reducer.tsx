@@ -1,15 +1,8 @@
-import {userAPI} from "../api/api";
+import {ResultCodesEnum, userAPI} from "../api/api";
 import {updateObjectInArray} from "../utils/object-helpers";
-
-const UNFOLLOW = "UNFOLLOW"
-const FOLLOW = "FOLLOW_UP"
-const SET_USERS = "SET_USERS"
-const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
-const SET_TOTAL_COUNT = "SET_TOTAL_COUNT"
-const IS_FETCHING = "IS_FETCHING"
-const IS_FOLLOWING_PROGRESS = "IS_FOLLOWING_PROGRESS"
-
-
+import {PhotosType} from "./profile-reducer";
+import {AppRootStateType} from "./redux-store";
+import {Dispatch} from "react";
 
 let initialState = {
     users: [],
@@ -21,31 +14,17 @@ let initialState = {
 }
 
 
-function usersReducer(state: usersTypeAll = initialState, action: UserActionTypes): usersTypeAll {
+function usersReducer(state: UsersTypeAll = initialState, action: UserActionTypes): UsersTypeAll {
     switch (action.type) {
         case FOLLOW:
             return {
                 ...state,
-                users:updateObjectInArray(state.users,action.userId,'id',{followed:true})
-
-                // users: state.users.map(u => {
-                //     if (u.id === action.userId) {
-                //         return {...u, followed: true}
-                //     }
-                //     return u
-                // })
+                users: updateObjectInArray(state.users, action.userId, 'id', {followed: true})
             }
         case UNFOLLOW:
             return {
                 ...state,
-                /////// users:[...state.users],
-                // users: state.users.map(u => {
-                //     if (u.id === action.userId) {
-                //         return {...u, followed: false}
-                //     }
-                //     return u
-                // })
-                users:updateObjectInArray(state.users,action.userId,'id',{followed:false})
+                users: updateObjectInArray(state.users, action.userId, 'id', {followed: false})
             }
         case SET_USERS:
             return {...state, users: action.users}//взять старый стей и пользовтелей которые там были и перезатеретт весь массив
@@ -73,10 +52,13 @@ function usersReducer(state: usersTypeAll = initialState, action: UserActionType
 
 }
 
-export const follow = (userId: any): FollowActionCreatorType => ({type: FOLLOW, userId})
 
-export const unFollow = (userId: any): UnFollowActionCreatorType => ({type: UNFOLLOW, userId})
-export const setUsers = (users: any): setUsetACType => ({type: SET_USERS, users})
+///////////*********ACTIONS**********//////////
+
+export const follow = (userId: number | null): FollowActionCreatorType => ({type: FOLLOW, userId})
+
+export const unFollow = (userId: number | null): UnFollowActionCreatorType => ({type: UNFOLLOW, userId})
+export const setUsers = (users: Array<UsersType>): setUsetACType => ({type: SET_USERS, users})
 export const setCurrentPage = (currentPage: number): setCurrentPageACType => ({
     type: SET_CURRENT_PAGE, currentPage: currentPage
 })
@@ -90,36 +72,25 @@ export const isFollowingInProgress = (isFetching: boolean, userId: number): isFo
     type: IS_FOLLOWING_PROGRESS, isFetching: isFetching, userId: userId
 })
 
-///////***********образец САНКИ первый вариант*****************///////////////
+///////////*********THUNK**********//////////
 
-// export const getUsersThunk = (dispatch:any)=>{
-//    dispatch.toggleIsFetching(true)
-//     userAPI.getUsers(this.props.currentPage, this.props.pageSize).then((data:any) => {
-//         dispatch.toggleIsFetching(false)
-//         dispatch.setUsers(data.items)
-//         dispatch.setTotalUsersCount(data.totalCount)
-//     });
-// }
-
-///////***********  образец САНКИ второй вариант с создателем САНКИ который нам её возвращает  *****************///////////////
-// getUsersThunkСreator
-export const getUsersTC = (page: any, pageSize: any) => {
-    return async (dispatch: any) => {
+export const getUsersTC = (page: number, pageSize: number) => {
+    return async (dispatch: Dispatch<UserActionTypes>, getState: () => AppRootStateType) => {
         dispatch(toggleIsFetching(true))
         dispatch(setCurrentPage(page))
         let data = await userAPI.getUsers(page, pageSize)
         dispatch(toggleIsFetching(false))
-        dispatch(setUsers(data.items))
-        dispatch(setTotalUsersCount(data.totalCount))
+        dispatch(setUsers(data.data.items))
+        dispatch(setTotalUsersCount(data.data.totalCount))
 
     }
 }
 
 export const unFollowThunkCreator = (userID: number) => {
-    return async (dispatch: any) => {
+    return async (dispatch: Dispatch<UserActionTypes>) => {
         dispatch(isFollowingInProgress(true, userID))
         let data = await userAPI.unFollowUsers(userID)
-        if (data.resultCode === 0) {
+        if (data.resultCode === ResultCodesEnum.Success) {
             dispatch(unFollow(userID))
         }
         dispatch(isFollowingInProgress(false, userID))
@@ -127,7 +98,7 @@ export const unFollowThunkCreator = (userID: number) => {
     }
 }
 export const followThunkCreator = (userID: number) => {
-    return async (dispatch: any) => {
+    return async (dispatch: Dispatch<UserActionTypes>) => {
         dispatch(isFollowingInProgress(true, userID))
         let data = await userAPI.followUsers(userID)
         if (data.resultCode === 0) {
@@ -138,21 +109,22 @@ export const followThunkCreator = (userID: number) => {
     }
 }
 
+///////////*********TYPES**********//////////
 
 type LocationType = {
     city: string
     country: string
 }
-export type usersType = {
+export type UsersType = {
     id: number
-    photoUrl: any
-    followed: boolean
     name: string
     status: string
+    photos: PhotosType
+    followed: boolean
     location: LocationType
 }
-export type usersTypeAll = {
-    users: Array<usersType>
+export type UsersTypeAll = {
+    users: Array<UsersType>
     pageSize: number
     totalUsersCount: number
     currentPage: number
@@ -201,9 +173,16 @@ type UnFollowActionCreatorType = {
 }
 type setUsetACType = {
     type: typeof SET_USERS
-    users: any
+    users: Array<UsersType>
 
 }
+const UNFOLLOW = "UNFOLLOW"
+const FOLLOW = "FOLLOW_UP"
+const SET_USERS = "SET_USERS"
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
+const SET_TOTAL_COUNT = "SET_TOTAL_COUNT"
+const IS_FETCHING = "IS_FETCHING"
+const IS_FOLLOWING_PROGRESS = "IS_FOLLOWING_PROGRESS"
 
 
 export default usersReducer

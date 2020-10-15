@@ -4,13 +4,17 @@ import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from "../../common/FormsControls/FormsControls";
 import {required} from "../../../utils/validators/validators";
 import style from "../../common/FormsControls/FormControls.module.css";
+import {Button} from "@material-ui/core";
 
 
 export const ProfileDataForm: React.FC<InjectedFormProps<ProfileDataFormType>> = (props: ProfileDataFormType) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <button>Save</button>
+                <button className={classes.myButton}>Save</button>
+               {/*<Button size="small" variant="contained" color="primary">*/}
+               {/*     Edit*/}
+               {/* </Button>*/}
             </div>
             {props.error && <div className={style.formSummaryError}>
                 {props.error}

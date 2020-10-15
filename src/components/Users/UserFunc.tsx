@@ -1,26 +1,23 @@
 import React from "react";
 import {Paginator} from "../common/Paginator/Paginator";
 import {User} from "./User";
+import {UsersType} from "../../redux/user-reducer";
 
 
 
-type usersType = {
+type usersTypeForComponent = {
     pageSize: number
     currentPage: number
-    users: any
+    users: Array<UsersType>
     totalUsersCount: number
     onPageChanged: (p: number) => void
     unFollow: (userId: any) => void
     follow: (userId: any) => void
     name: string
     status: any
-    // setCurrentPage:Function
-    // isFollowingInProgress: any
     followingInProgress: Array<number>
     unFollowThunkCreator:(userID:number)=>void
     followThunkCreator:(userID:number)=>void
-
-
 }
 
 
@@ -36,17 +33,12 @@ function solve(s: any) {
 
 
 
-export const Users = (props: usersType) => {
+export const Users = (props: usersTypeForComponent) => {
 
 
     return (
         <div>
-            <Paginator pageSize={props.pageSize}
-                       currentPage={props.currentPage}
-                       onPageChanged={props.onPageChanged}
-                       totalItemsCount={props.totalUsersCount}
-                       // setCurrentPage={props.setCurrentPage}
-            />
+
 
             {
                 props.users.map((u: any) => <User users={u}
@@ -57,6 +49,11 @@ export const Users = (props: usersType) => {
 
 
                 )}
+            <Paginator pageSize={props.pageSize}
+                       currentPage={props.currentPage}
+                       onPageChanged={props.onPageChanged}
+                       totalItemsCount={props.totalUsersCount}
+            />
         </div>)
 
 }

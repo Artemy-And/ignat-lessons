@@ -1,4 +1,5 @@
-import {stateType, dialogsTypeState} from "./state"
+import {dialogsDataType, dialogsMessagesDataType} from "../components/Dialogs/Dialogs";
+import {postsTypeState} from "./profile-reducer";
 
 // const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT"
 const ADD_MESSAGE = "ADD-MESSAGE"
@@ -17,7 +18,7 @@ let initialState = {
         {id: 9, name: "Stephan"},
     ],
     messages: [
-        {id: 1, message: "Halllooo?"},
+        {id: 1, message: "Hello, how is it going?"},
         // { id: 2, message: "Hey how are you?" },
         // { id: 3, message: "Hey how are you?" },
 
@@ -68,15 +69,31 @@ type AddMessageCreatorType = {
     type: typeof ADD_MESSAGE
     newMessageText:string
 }
-// type UpdateNEwMessageTextCreator = {
-//     type: typeof UPDATE_NEW_MESSAGE_TEXT;
-//     newMessageText1: string
-// }
+
 
 export const addMessageCreator = (newMessageText:string): AddMessageCreatorType => ({type: ADD_MESSAGE,newMessageText})
 
-// export const updateNEwMessageTextCreator = (text: string): UpdateNEwMessageTextCreator => ({
-//     type: UPDATE_NEW_MESSAGE_TEXT, newMessageText1: text,
-// })
+
+
+
+export type stateTypeFirst = {
+    _state: stateType
+    getState: () => stateType
+    rerenderEntireTree: (state: any) => void
+    subsCribe: (observer: any) => void
+    dispatch: (action: any) => void///КАКОЙ ТИп
+}
+
+
+export type dialogsTypeState = {
+    dialogs: Array<dialogsDataType>
+    messages: Array<dialogsMessagesDataType>
+    newMessageText:string
+}
+export type stateType = {
+    profilePage: postsTypeState
+    dialogsPage: dialogsTypeState
+    auth:any
+}
 
 export default dialogsReducer

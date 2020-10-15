@@ -1,41 +1,41 @@
 import React from "react";
-import {postsType} from "./../components/Profile/MyPosts/MyPosts";
-import {
-    dialogsDataType,
-    dialogsMessagesDataType,
-} from "./../components/Dialogs/Dialogs";
 import profileReducer from "./profile-reducer";
 import dialogsReducer from "./dialogs-reducer";
+// import {postsType} from "./../components/Profile/MyPosts/MyPosts";
+// import {
+//     dialogsDataType,
+//     dialogsMessagesDataType,
+// } from "./../components/Dialogs/Dialogs";
 
 
 // const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
 // const ADD_POST = "ADD-POST"
 // const UPDATE_NEW_MESSAGE_TEXT ="UPDATE-NEW-MESSAGE-TEXT"
 // const ADD_MESSAGE ="ADD-MESSAGE"
-export type stateTypeFirst = {
-    _state: stateType
-    getState: () => stateType
-    rerenderEntireTree: (state: any) => void
-    subsCribe: (observer: any) => void
-    dispatch: (action: any) => void///КАКОЙ ТИп
-}
-export type postsTypeState = {
-    posts: Array<postsType>
-
-    profile:any
-    status:string
-}
-
-export type dialogsTypeState = {
-    dialogs: Array<dialogsDataType>
-    messages: Array<dialogsMessagesDataType>
-    newMessageText:string
-}
-export type stateType = {
-    profilePage: postsTypeState
-    dialogsPage: dialogsTypeState
-    auth:any
-}
+// export type stateTypeFirst = {
+//     _state: stateType
+//     getState: () => stateType
+//     rerenderEntireTree: (state: any) => void
+//     subsCribe: (observer: any) => void
+//     dispatch: (action: any) => void///КАКОЙ ТИп
+// }
+// export type postsTypeState = {
+//     posts: Array<postsType>
+//
+//     profile:any
+//     status:string
+// }
+//
+// export type dialogsTypeState = {
+//     dialogs: Array<dialogsDataType>
+//     messages: Array<dialogsMessagesDataType>
+//     newMessageText:string
+// }
+// export type stateType = {
+//     profilePage: postsTypeState
+//     dialogsPage: dialogsTypeState
+//     auth:any
+// }
 
 // let store: stateTypeFirst = {
 let store: any = {

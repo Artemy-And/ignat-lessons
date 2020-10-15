@@ -1,20 +1,18 @@
 import React from "react";
-import {addPostActionCreator, ProfileActionTypes} from "../../../redux/profile-reducer";
+import {addPostActionCreator, deletePostAC, ProfileActionTypes} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import {Store} from "redux";
-import {stateType} from "../../../redux/state";
 import {connect} from "react-redux";
+import {stateType} from "../../../redux/dialogs-reducer";
 
 export type postsType = {
-    id: number;
+    id: number | string;
     message: string;
     countLikes: number;
 };
 export type propsType = {
     store: Store
 };
-
-
 
 
 const mapStateToProps = (state: stateType) => {
@@ -26,28 +24,18 @@ const mapStateToProps = (state: stateType) => {
 
 let mapDispatchToProps = (dispatch: (action: ProfileActionTypes) => void) => {
     return {
-        addPost: (newPostText:string) => {
+        addPost: (newPostText: string) => {
             dispatch(addPostActionCreator(newPostText))
         },
+        deletePost: (postId: number|string) => {
+            dispatch(deletePostAC(postId))
+        }
     }
 }
-const MyPostsContainer = connect(mapStateToProps,mapDispatchToProps)(MyPosts)
+const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)
 
 
 export default MyPostsContainer;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // const MyPostsContainer = () => {

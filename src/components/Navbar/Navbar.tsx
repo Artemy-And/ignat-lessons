@@ -7,9 +7,7 @@ import store from "./../../redux/state";
 // // ПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙ
 // ПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙПОСТАВИЛ КЕЙЙЙ
 const Navbar = () => {
-    const bestFriends = store._state.dialogsPage.dialogs.map((friend:any) => {
-        return <div key={friend.id}>{friend.name}</div> ;
-    })
+
   return (
     <nav className={classes.nav}>
       <div className={classes.item}>
@@ -30,9 +28,7 @@ const Navbar = () => {
       <div className={classes.item}>
           <NavLink to ="settings" activeClassName={classes.active}>Settings</NavLink>
       </div>
-        <div className={classes.item}>
-            <span className={classes.myBestFriends}>{bestFriends}</span>
-        </div>
+
 
 
 

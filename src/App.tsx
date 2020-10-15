@@ -1,8 +1,7 @@
 import React from "react";
-import "./App.css";
+import styles from "./App.module.css";
 import Navbar from "./components/Navbar/Navbar";
 import {HashRouter, Route, withRouter} from "react-router-dom";
-
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
@@ -11,10 +10,14 @@ import HeaderContainer from "./components/Header/HeaderContainer";
 import {Login} from "./components/login/Login";
 import {compose} from "redux";
 import {connect, Provider} from "react-redux";
-import {initializeAppTC} from "./redux/app-reducer";
+import {setAppErrorAC, initializeAppTC} from "./redux/app-reducer";
 import ToggleIsFetching from "./components/common/ToggleIsFetching";
 import store from "./redux/redux-store";
 import {withSuspence} from "./hoc/withSuspence";
+import {ErrorSnackbar} from "./components/common/ErrorSnackbar";
+import BestFriends from "./components/BestFrieds/BestFriends";
+
+
 
 // Этот компонент загружается динамически
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -26,11 +29,14 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 class App extends React.Component<any, any> {
 //необходимо задиспачить тут ошибку которую нужно создать в app reducer 47 минута
     catchAllUnhandledErrors = (reason: any, promise: any) => {
-        alert('Some error');
+        this.props.setAppErrorAC("error")
+        console.log(this.props.error)
     }
 
     componentDidMount() {
         this.props.initializeAppTC()
+
+
         // @ts-ignore
         window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
     }
@@ -38,6 +44,7 @@ class App extends React.Component<any, any> {
     componentWillUnmount() {
         // @ts-ignore
         window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+
     }
 
     render() {
@@ -46,11 +53,12 @@ class App extends React.Component<any, any> {
         }
         return (
 
-            <div className="app-wrapper">
+            <div className={styles.appWrapper}>
+                {this.props.error !== " " && <ErrorSnackbar/>}
+
                 <HeaderContainer/>
                 <Navbar/>
-
-                <div className="app-wrapper-content">
+                <div className={styles.appWrapperContent}>
                     <Route
                         exact
                         path="/dialogs"
@@ -69,7 +77,7 @@ class App extends React.Component<any, any> {
                             </React.Suspense>
                         }
                     />
-                    <Route path="/users" render={() => <UsersContainer/>}/>
+                    <Route path="/users" render={() => <UsersContainer pageTitle={'Logists'}/>}/>
                     <Route path="/login" render={() => <Login/>}/>
 
                     <Route path="/news" component={News}/>
@@ -77,6 +85,10 @@ class App extends React.Component<any, any> {
                     <Route path="/settings" component={Settings}/>
 
 
+                </div>
+                {/*<Navbar/>*/}
+                <div className={styles.asside} >
+<BestFriends/>
                 </div>
             </div>
 
@@ -86,12 +98,13 @@ class App extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: any) => ({
-    initialized: state.app.initialized
+    initialized: state.app.initialized,
+    error:state.app.error
 })
 
 export let AppContainer = compose<React.ComponentType>(
     withRouter,
-    connect(mapStateToProps, {initializeAppTC}))(App);
+    connect(mapStateToProps, {initializeAppTC,setAppErrorAC}))(App);
 
 export const SocialTSApp = (props: any) => {
     return (<HashRouter>

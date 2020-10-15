@@ -1,14 +1,6 @@
 import React from "react";
-// import {UserActionTypes, usersTypeAll} from "./user-reducer";
-// import {profileAPI, setLoginAPI} from "../api/api";
-// import {setStatusUpdate} from "./profile-reducer";
 
-const SET_LOGIN = "SET_LOGIN"
 
-type initialStateType = {
-    login: string
-    password: any
-}
 
 let initialState: initialStateType = {
     login: "",
@@ -32,11 +24,18 @@ export function loginReducer(state: initialStateType = initialState, action: set
 
 
 }
-
+///////////*********ACTIONS**********//////////
 export const setLoginAC = (login: string, password: string): setLoginACType => ({
     type: SET_LOGIN, login, password
 })
 
+///////////*********TYPES**********//////////
+const SET_LOGIN = "SET_LOGIN"
+
+type initialStateType = {
+    login: string
+    password: any
+}
 type setLoginACType = {
     type: typeof SET_LOGIN
     login: string

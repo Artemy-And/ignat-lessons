@@ -1,25 +1,8 @@
-import {authAPI,securityAPI} from "../api/api";
+import {authAPI, ResultCodesEnum, securityAPI} from "../api/api";
 import {Dispatch} from "redux";
 import {stopSubmit} from "redux-form";
+import {setAppErrorAC} from "./app-reducer";
 
-const SET_USER_DATA = "social-network/auth/SET_USER_DATA"
-const GET_CAPTCHAURL_SUCCESS = "social-network/auth/GET_CAPTCHAURL_SUCCESS"
-
-
-export type authType = {
-    userId: any
-    email: any
-    login: any
-    isAuth: boolean
-    captchaUrl:any
-}
-export type dataType = {
-    userId: string
-    email: string
-    login: string
-    isAuth: boolean
-    captcha?:any
-}
 
 let initialState = {
     userId: null,
@@ -51,7 +34,7 @@ function authReducer(state: authType = initialState, action: UserActionTypes): a
 
 
 }
-
+///////////*********ACTIONS**********//////////
 export const setUserData = (userId: any, email: any, login: any, isAuth: any): setUserDataType => ({
     type: SET_USER_DATA,
     payload: {userId, email, login, isAuth}
@@ -61,26 +44,30 @@ export const getCaptchaUrlAC = (captchaUrl:any): getCaptchaURLACType => ({
     payload: {captchaUrl}
 })
 
-export const getAuthUserData = () => async (dispatch: Dispatch<any>) => {
+export const getAuthUserData = () => async (dispatch: Dispatch<UserActionTypes>) => {
     let response = await authAPI.me();
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
         let {id, email, login} = response.data
         dispatch(setUserData(id, email, login, true))
     }
 
 }
-
+///////////*********THUNK**********//////////
 export const loginTC = (email: string, password: string, rememberMe: boolean,captcha:any) => async (dispatch: Dispatch<any>) => {
     // dispatch(stopSubmit('login',{_error:'asdas'}));
     let res = await authAPI.login(email, password, rememberMe,captcha)
-    if (res.data.resultCode === 0) {
+    if (res.data.resultCode === ResultCodesEnum.Success) {
         dispatch(getAuthUserData())
+        // let message = res.data.messages
+        //     // [0]
+        // dispatch(setAppErrorAC(message))
     } else {
-        if (res.data.resultCode === 10){
+        if (res.data.resultCode === ResultCodesEnum.CaptchaIsRequired){
             dispatch(getCaptchaUrlTC())
         }
         let message = res.data.messages.length > 0 ? res.data.messages[0] : "Some error"
         dispatch(stopSubmit('login', {_error: message}));
+        dispatch(setAppErrorAC(message))
 
     }
 
@@ -98,6 +85,26 @@ export const getCaptchaUrlTC = () => async (dispatch: Dispatch<any>) => {
     const captchaURL =  res.data.url
                 dispatch(getCaptchaUrlAC(captchaURL))
             }
+
+///////////*********TYPES**********//////////
+const SET_USER_DATA = "social-network/auth/SET_USER_DATA"
+const GET_CAPTCHAURL_SUCCESS = "social-network/auth/GET_CAPTCHAURL_SUCCESS"
+
+
+export type authType = {
+    userId: any
+    email: any
+    login: any
+    isAuth: boolean
+    captchaUrl:any
+}
+export type dataType = {
+    userId: string
+    email: string
+    login: string
+    isAuth: boolean
+    captcha?:any
+}
 
 
 type getAuthUserDataType = { getAuthUserData: () => void }

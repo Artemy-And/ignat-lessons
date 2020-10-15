@@ -2,11 +2,10 @@ import React from "react";
 import classes from "./Dialogs.module.css";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {
-    dialogsTypeState,
-} from "../../redux/state";
+
 
 import {MessagesReduxForm} from "./MessagesByForm";
+import {dialogsTypeState} from "../../redux/dialogs-reducer";
 
 
 export type dialogsDataType = {
@@ -46,10 +45,13 @@ const Dialogs = (props: any) => {
 
     return (
         <div className={classes.dialogsAll}>
+
             <div className={classes.dialogs}>{newDialogs}</div>
 
+            <div className={classes.messages}>
+                <MessagesReduxForm onSubmit={addNewMessage}/>
+            </div>
 
-            <MessagesReduxForm onSubmit={addNewMessage}/>
 
 
             <div className={classes.messages}>{newDialogsMessages}</div>

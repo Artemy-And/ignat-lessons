@@ -2,6 +2,7 @@ import React from "react";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Textarea} from "../common/FormsControls/FormsControls";
 import {maxLengthCreator, required} from "../../utils/validators/validators";
+import classes from "./Dialogs.module.css";
 
 type FormDataType = {
     newMessageText: string
@@ -22,7 +23,7 @@ const MessagesForm:React.FC<InjectedFormProps<FormDataType>> = (props: any) => {
                 </Field>
 
 
-                <button>Add post</button>
+                <button className={classes.myButton}>Add post</button>
             </div>
     </form>
    )

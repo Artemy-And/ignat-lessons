@@ -6,19 +6,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "../../redux/auth-reducer";
 import {Redirect} from "react-router";
 import {AppRootStateType} from "../../redux/redux-store";
-import style from '../common/FormsControls/FormControls.module.css'
 
 
-type FormDataType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha?:any
-}
 
-const LoginForm: React.FC<InjectedFormProps<any>> = (props:any) => {
 
-console.log(props.captchaUrl)
+const LoginForm: React.FC<InjectedFormProps<FormDataType, LoginFormOwnProps> & LoginFormOwnProps> = (props: LoginFormDataType) => {
+
+    console.log(props.captchaUrl)
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
@@ -33,14 +27,14 @@ console.log(props.captchaUrl)
             </div>
             {props.captchaUrl && <img src={props.captchaUrl}/>}
             {props.captchaUrl && <div>
-                <Field placeholder={'symbols from image'} name={'captcha'} validate={[required]} component={Input}/> remember me
+                <Field placeholder={'symbols from image'} name={'captcha'} validate={[required]}
+                       component={Input}/> remember me
             </div>}
-        
 
 
-            {props.error && <div className={style.formSummaryError}>
-                {props.error}
-            </div>}
+            {/*{props.error && <div className={style.formSummaryError}>*/}
+            {/*    {props.error}*/}
+            {/*</div>}*/}
 
             <div>
                 <button>Login</button>
@@ -49,12 +43,12 @@ console.log(props.captchaUrl)
     )
 }
 
-const LoginReduxForm:any = reduxForm<any>({form: 'login'})(LoginForm)
+const LoginReduxForm = reduxForm<FormDataType,LoginFormOwnProps>({form: 'login'})(LoginForm)
 
 
-export const Login = (props: any) => {
+export const Login = () => {
     const isAuth = useSelector<AppRootStateType, any>((state) => state.auth.isAuth)
-    const captchaUrl =useSelector<AppRootStateType,any>(state => state.auth.captchaUrl)
+    const captchaUrl = useSelector<AppRootStateType, any>(state => state.auth.captchaUrl)
     const dispatch = useDispatch();
 
     const onSubmit = (formData: FormDataType) => {
@@ -71,8 +65,23 @@ export const Login = (props: any) => {
 
     )
 }
-
-
+type LoginFormDataType = {
+    email?: string
+    password?: string
+    rememberMe?: boolean
+    // captcha?:any
+    handleSubmit?: () => void
+    captchaUrl?: string | null
+}
+type LoginFormOwnProps = {
+    captchaUrl: string | null
+}
+type FormDataType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string | null
+}
 
 
 
