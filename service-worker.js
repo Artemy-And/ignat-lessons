@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/logistics-social-network/precache-manifest.17c06426d26c21035ced6402c33b7580.js"
+  "/logistics-social-network/precache-manifest.286638af6e27e5474777f025290c9c5b.js"
 );
 
 self.addEventListener('message', (event) => {
